@@ -25,7 +25,7 @@ const EventCard: React.FC<Event> = ({
     const fetchMetadata = async () => {
       try {
         const response = await axios.get(
-          `/api/metadata?url=${encodeURIComponent(url)}`
+          `/api/metadata?url=${encodeURIComponent(url ?? "")}`
         );
         const { image } = response.data;
         if (image) {
@@ -72,7 +72,7 @@ const EventCard: React.FC<Event> = ({
 
         {/* タグの表示 */}
         <Box sx={{ mt: 1 }}>
-          {tags.length > 0 ? (
+          {tags && tags.length > 0 ? ( // tagsが存在し、かつその長さが0より大きい場合
             tags.map((tag, index) => (
               <Chip key={index} label={tag} sx={{ mr: 1 }} />
             ))
