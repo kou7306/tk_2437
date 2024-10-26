@@ -4,11 +4,11 @@ import { createTheme } from "@mui/material";
 const theme = createTheme({
   palette: {
     primary: {
-      main: "#2ecee6", // メインカラー
+      main: "#674598", // メインカラー
       contrastText: "#2ecee6",
     },
     secondary: {
-      main: "#432ee6", // メインの補助カラー
+      main: "#674598", // メインの補助カラー
       contrastText: "#2c64c5",
     },
     background: {
@@ -23,7 +23,7 @@ const theme = createTheme({
       main: "#ee223c", // メインとは反対の色
     },
     info: {
-      main: "#4d5252", //hover時の色
+      main: "#674598", //hover時の色
     },
     warning: {
       main: "#3e4242", // 黒の中のコンテンツ

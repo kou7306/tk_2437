@@ -10,7 +10,7 @@ const config: Config = {
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
       colors: {
-        primary: "#2ecee6", //メインカラー
+        primary: "#674598", //メインカラー
         secondary: "#432ee6", //メインの補助カラー
         base: "#ffffff", //背景
         sub_base: "#674598", //コンテンツの背景

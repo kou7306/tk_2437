@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { User } from "@/components/profile/options";
+import { User } from "@/types/User";
 import ProfileCard from "@/components/profile/ProfileCard";
 import { getUuidFromCookie } from "@/actions/users";
 import toast from "react-hot-toast";
