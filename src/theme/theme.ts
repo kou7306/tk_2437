@@ -12,12 +12,12 @@ const theme = createTheme({
       contrastText: "#2c64c5",
     },
     background: {
-      default: "#323232", // 背景
-      paper: "#2F3232", // コンテンツの背景
+      default: "#ffffff", // 背景
+      paper: "#fffffff", // コンテンツの背景
     },
     text: {
-      primary: "#ffffff", // テキスト
-      secondary: "#b5b5ba", // 枠線
+      primary: "#000000", // テキスト
+      secondary: "#000000", // 枠線
     },
     error: {
       main: "#ee223c", // メインとは反対の色

@@ -17,7 +17,7 @@ const config: Config = {
         content_base: "#3e4242", //コンテンツの中のコンテンツの背景
         border: "#b5b5ba", //枠線
         accent: "#ee223c", //メインとは反対の色
-        text: "#ffffff", //テキスト
+        text: "#000000", //テキスト
         sub_text: "#b5b5ba", //枠線
         hover: "#4d5252", //hover時の色
         hover_blue: "#39dff7", //hover時の色

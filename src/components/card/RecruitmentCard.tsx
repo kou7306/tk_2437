@@ -5,7 +5,6 @@ import { Card, CardMedia, CardContent, Typography } from "@mui/material";
 interface RecruitmentCardProps {
   name: string; // イベント名
   detail: string; // 募集内容
-  image: string; // 画像のURL
   title: string; // タイトル
   date: string; // 募集日
   sum: number; // 募集人数
@@ -16,20 +15,17 @@ const RecruitmentCard: React.FC<RecruitmentCardProps> = ({
   title,
   name,
   detail,
-  image,
   date,
   sum,
   participants,
 }) => (
   <Card sx={{ mt: 2 }}>
-    {image && (
-      <CardMedia
-        component="img"
-        sx={{ height: 200, objectFit: "cover" }} // 高さを300pxに固定し、coverでリサイズ
-        image={image}
-        alt="Recruitment Image"
-      />
-    )}
+    <CardMedia
+      component="img"
+      sx={{ height: 200, objectFit: "cover" }} // 高さを300pxに固定し、coverでリサイズ
+      image="https://placehold.jp/150x150.png"
+      alt="Recruitment Image"
+    />
     <CardContent>
       <Typography variant="h6" component="div">
         {title || "No title available"} {/* 募集タイトル */}

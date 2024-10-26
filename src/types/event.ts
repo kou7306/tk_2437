@@ -1,15 +1,11 @@
-// src/types/event.ts
-export type Event = {
-  id: string;
-  title: string;
-  event_type: string;
-  owner_id: string;
-  max_participants: number;
-  participant_ids: string[];
-  purpose: string;
-  requirements: string;
-  deadline: string;
-  techs: string[];
-  created_at: string;
-  updated_at: string | null;
-};
+export interface Event {
+  name: string; // イベント名
+  detail: string; // イベント詳細
+  place: string; // 開催場所
+  period: {
+    start: string; // 開始日（例: "2024-10-01"）
+    end: string; // 終了日（例: "2024-10-10"）
+  };
+  tags: string[]; // タグ
+  url: string; // イベントのURL
+}
