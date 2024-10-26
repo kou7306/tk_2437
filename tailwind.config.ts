@@ -13,7 +13,7 @@ const config: Config = {
         primary: "#2ecee6", //メインカラー
         secondary: "#432ee6", //メインの補助カラー
         base: "#ffffff", //背景
-        sub_base: "#2F3232", //コンテンツの背景
+        sub_base: "#674598", //コンテンツの背景
         content_base: "#3e4242", //コンテンツの中のコンテンツの背景
         border: "#b5b5ba", //枠線
         accent: "#ee223c", //メインとは反対の色

@@ -14,7 +14,7 @@ const HomePage: React.FC = () => {
     const fetchEvents = async () => {
       try {
         setIsLoading(true);
-        const newEvents = await getNewEvents();
+        const newEvents = await getNewEvents("9");
         setEvents(newEvents);
         setError(null);
       } catch (err) {

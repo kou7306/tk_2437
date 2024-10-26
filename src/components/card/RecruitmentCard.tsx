@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Card, CardMedia, CardContent, Typography } from "@mui/material";
+import { Card, CardMedia, CardContent, Typography, Box } from "@mui/material";
 import { Recruitment } from "@/types/Recruitment";
 import axios from "axios";
+import Link from "next/link"; // Linkコンポーネントをインポート
 
 const RecruitmentCard: React.FC<Recruitment> = ({
+  id, // IDを受け取る
   title,
   name,
   date,
@@ -38,28 +40,49 @@ const RecruitmentCard: React.FC<Recruitment> = ({
   }, [event_url]);
 
   return (
-    <Card sx={{ mt: 2 }}>
-      <CardMedia
-        component="img"
-        sx={{ height: 200, objectFit: "cover" }} // 高さを300pxに固定し、coverでリサイズ
-        image={imageSrc}
-        alt="Recruitment Image"
-      />
-      <CardContent>
-        <Typography variant="h6" component="div">
-          {title || "No title available"} {/* 募集タイトル */}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          {`Company: ${name}`} {/* 会社名 */}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          {`Date: ${date}`} {/* 募集日 */}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          {`Participants: ${participants} / ${sum}`} {/* 参加者数と募集人数 */}
-        </Typography>
-      </CardContent>
-    </Card>
+    <Link href={`/recruitment/${id}`} passHref>
+      {" "}
+      {/* リンクを追加 */}
+      <Card sx={{ mt: 2, position: "relative", cursor: "pointer" }}>
+        <CardMedia
+          component="img"
+          sx={{ height: 200, objectFit: "cover" }} // 高さを200pxに固定し、coverでリサイズ
+          image={imageSrc}
+          alt="Recruitment Image"
+        />
+        <CardContent>
+          <Typography variant="h6" component="div">
+            {title || "タイトルがありません"} {/* 募集タイトル */}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            {`イベント名: ${name || "不明"}`} {/* イベント名 */}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            {`日付: ${
+              date ? new Date(date).toLocaleDateString("ja-JP") : "不明"
+            }`}{" "}
+            {/* 日付 */}
+          </Typography>
+          <Box
+            sx={{
+              position: "absolute",
+              bottom: 16,
+              right: 16,
+              backgroundColor: "rgba(255, 255, 255, 0.8)",
+              borderRadius: 1,
+              padding: "8px 12px",
+              boxShadow: 1,
+              zIndex: 1,
+            }}
+          >
+            <Typography variant="body2" fontSize="1.2rem">
+              {`${participants.length} / ${sum || 0}`}{" "}
+              {/* 参加者数と募集人数 */}
+            </Typography>
+          </Box>
+        </CardContent>
+      </Card>
+    </Link>
   );
 };
 

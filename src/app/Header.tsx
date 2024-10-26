@@ -19,7 +19,7 @@ const Header = () => {
       <div className="container mx-auto flex justify-between items-center py-4 px-6">
         <div className="text-2xl font-bold">
           <a href="/" className="flex items-center">
-            <span className="text-primary">Nazomate</span>
+            <span className="text-text">Nazomate</span>
           </a>
         </div>
         <nav className="flex space-x-6">

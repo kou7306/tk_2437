@@ -1,8 +1,10 @@
 import { Recruitment } from "@/types/Recruitment";
 
-export const getNewRecruitments = async (): Promise<Recruitment[]> => {
+export const getNewRecruitments = async (
+  limit: string
+): Promise<Recruitment[]> => {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/recruitment/get-filtered-recruitment?sortOrder=newest&limit=9`
+    `${process.env.NEXT_PUBLIC_API_URL}/recruitment/get-filtered-recruitment?sortOrder=newest&limit=${limit}`
   );
 
   // Ensure a successful response

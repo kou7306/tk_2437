@@ -15,7 +15,7 @@ const RecruitmentPage: React.FC = () => {
     const fetchRecruitments = async () => {
       try {
         setIsLoading(true);
-        const newRecruitments = await getNewRecruitments();
+        const newRecruitments = await getNewRecruitments("9");
         setRecruitments(newRecruitments);
         setError(null);
       } catch (err) {

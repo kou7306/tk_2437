@@ -10,14 +10,17 @@ import {
 } from "@mui/material";
 import { Event } from "@/types/Event";
 import axios from "axios";
+import Link from "next/link"; // Import Link from Next.js
 
 const EventCard: React.FC<Event> = ({
+  id, // Make sure to include 'id' in the props
   name,
   detail,
   place,
   period,
   tags,
   url,
+  company,
 }) => {
   const [imageSrc, setImageSrc] = useState("https://placehold.jp/150x150.png");
 
@@ -44,46 +47,50 @@ const EventCard: React.FC<Event> = ({
   }, [url]);
 
   return (
-    <Card sx={{ mt: 2 }}>
-      {/* イベント画像の表示 */}
-      <CardMedia
-        component="img"
-        sx={{ height: 200, objectFit: "cover" }}
-        image={imageSrc}
-        alt="Event Image"
-      />
-      <CardContent>
-        {/* イベント名の表示 */}
-        <Typography variant="h6" component="div">
-          {name || "No title available"}
-        </Typography>
-        {/* 詳細の表示 */}
-        <Typography variant="body2" color="text.secondary">
-          {detail || "No description available"}
-        </Typography>
-        {/* 場所の表示 */}
-        <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-          {place || "No place available"}
-        </Typography>
-        {/* 期間の表示 */}
-        <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-          {period ? `${period.start} ～ ${period.end}` : "No period available"}
-        </Typography>
+    <Link href={`/event/${id}`} passHref>
+      <Card sx={{ mt: 2, cursor: "pointer" }}>
+        {" "}
+        {/* Add cursor pointer to indicate it's clickable */}
+        {/* イベント画像の表示 */}
+        <CardMedia
+          component="img"
+          sx={{ height: 200, objectFit: "cover" }}
+          image={imageSrc}
+          alt="Event Image"
+        />
+        <CardContent>
+          {/* イベント名の表示 */}
+          <Typography variant="h6" component="div">
+            {name || "タイトルがありません"}
+          </Typography>
+          {/* 会社名の表示 */}
+          <Typography variant="body2" color="text.secondary">
+            {`会社名: ${company || "不明"}`} {/* 会社名 */}
+          </Typography>
+          {/* 場所の表示 */}
+          <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+            {`開催地: ${place || "不明"}`} {/* 場所 */}
+          </Typography>
+          {/* 期間の表示 */}
+          <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+            {period ? `${period.start} ～ ${period.end}` : "期間がありません"}
+          </Typography>
 
-        {/* タグの表示 */}
-        <Box sx={{ mt: 1 }}>
-          {tags && tags.length > 0 ? ( // tagsが存在し、かつその長さが0より大きい場合
-            tags.map((tag, index) => (
-              <Chip key={index} label={tag} sx={{ mr: 1 }} />
-            ))
-          ) : (
-            <Typography variant="body2" color="text.secondary">
-              No tags available
-            </Typography>
-          )}
-        </Box>
-      </CardContent>
-    </Card>
+          {/* タグの表示 */}
+          <Box sx={{ mt: 1 }}>
+            {tags && tags.length > 0 ? ( // tagsが存在し、かつその長さが0より大きい場合
+              tags.map((tag, index) => (
+                <Chip key={index} label={tag} sx={{ mr: 1 }} />
+              ))
+            ) : (
+              <Typography variant="body2" color="text.secondary">
+                タグがありません
+              </Typography>
+            )}
+          </Box>
+        </CardContent>
+      </Card>
+    </Link>
   );
 };
 
