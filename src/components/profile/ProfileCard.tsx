@@ -1,5 +1,5 @@
 import React from "react";
-import { User } from "@/types/user";
+import { User } from "@/types/User";
 import Image from "next/image";
 import ActivityList from "../activity/ActivityList";
 import MbtiGauges from "../activity/Mbti";
@@ -8,7 +8,7 @@ import MbtiGauges from "../activity/Mbti";
 interface ProfileCardProps {
   user: User;
   isMe: boolean;
-  onEdit: () => void;
+  onEdit?: () => void;
 }
 
 const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
@@ -64,7 +64,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
 
         {/* 右側: Activity List */}
         <div className="w-1/2">
-          <ActivityList user={user} />
+          <ActivityList user={user} isMe={isMe} />
         </div>
       </div>
     </div>

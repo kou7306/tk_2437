@@ -1,6 +1,6 @@
 export interface Recruitment {
-  id: string; // IDはUUID形式の文字列
-  created_at: Date; // 作成日時
+  id?: string; // IDはUUID形式の文字列
+  created_at?: Date; // 作成日時
   title?: string; // タイトル（任意）
   detail?: string; // 詳細（任意）
   name?: string; // 名前（任意）
@@ -10,4 +10,5 @@ export interface Recruitment {
   tags: string[]; // タグ（文字列の配列）
   owner_id?: string; // オーナーID（任意）
   event_url?: string; // イベントURL（任意）
+  owner_name?: string; // オーナー名（任意）
 }

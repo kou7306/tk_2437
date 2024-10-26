@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import { Recruitment } from "@/types/Recruitment"; // Recruitment型のインポート
+import { Recruitment } from "@/types/Recruitment";
 import {
   Card,
   CardContent,
@@ -13,6 +13,9 @@ import {
 } from "@mui/material";
 import { getRecruitment } from "@/utils/getRecruitment";
 import axios from "axios";
+import { joinRecruitment } from "@/utils/joinRecruitment";
+import { getUuidFromCookie } from "@/actions/users";
+import Link from "next/link"; // Import Link
 
 // リクルートメント詳細コンポーネント
 const RecruitmentDetail: React.FC = () => {
@@ -21,8 +24,20 @@ const RecruitmentDetail: React.FC = () => {
   const [recruitment, setRecruitment] = useState<Recruitment | null>(null);
   const [imageSrc, setImageSrc] = useState("https://placehold.jp/150x150.png");
   const [loading, setLoading] = useState(true);
+  const [uuid, setUuid] = useState<string | null>(null);
 
-  // Fetch recruitment data on component mount
+  useEffect(() => {
+    // ユーザーデータを取得する関数
+    const fetchProfile = async () => {
+      const userId = await getUuidFromCookie();
+      if (userId) {
+        setUuid(userId);
+      }
+    };
+
+    fetchProfile();
+  }, []);
+
   useEffect(() => {
     const fetchRecruitment = async () => {
       if (id) {
@@ -40,7 +55,6 @@ const RecruitmentDetail: React.FC = () => {
     fetchRecruitment();
   }, [id]);
 
-  // Fetch metadata for the image once the recruitment data is available
   useEffect(() => {
     const fetchMetadata = async () => {
       if (recruitment && recruitment.event_url) {
@@ -60,25 +74,33 @@ const RecruitmentDetail: React.FC = () => {
     };
 
     fetchMetadata();
-  }, [recruitment]); // Dependency on recruitment
+  }, [recruitment]);
 
   if (loading) {
-    return <div>読み込み中...</div>; // ローディング状態の表示
+    return <div>読み込み中...</div>;
   }
 
   if (!recruitment) {
-    return <div>リクルートメントが見つかりません。</div>; // データがない場合の表示
+    return <div>リクルートメントが見つかりません。</div>;
   }
 
-  // 日付をDateオブジェクトに変換
   const formattedDate = recruitment.date
     ? new Date(recruitment.date).toLocaleDateString("ja-JP")
-    : "不明"; // dateが存在しない場合は"不明"を返す
+    : "不明";
+
+  const handleJoinClick = () => {
+    if (uuid && recruitment?.id) {
+      joinRecruitment(uuid, recruitment.id); // Pass uuid and recruitment id
+    } else {
+      console.error(
+        "UUIDまたはリクルートメントIDが存在しないため、応募できません"
+      );
+    }
+  };
 
   return (
     <Card sx={{ mt: 2, p: 2, maxWidth: 800, mx: "auto" }}>
       <CardContent>
-        {/* 画像の表示 */}
         <Box sx={{ mb: 2, textAlign: "center" }}>
           <img
             src={imageSrc}
@@ -90,6 +112,13 @@ const RecruitmentDetail: React.FC = () => {
         <Typography variant="h5" component="div" gutterBottom>
           {recruitment.title || "タイトルがありません"}
         </Typography>
+
+        <Typography variant="body2" color="text.secondary">
+          <Link href={`/my-page/${recruitment.owner_id}`}>
+            {`募集者: ${recruitment.owner_name || "不明"}`}
+          </Link>
+        </Typography>
+
         <Typography variant="body2" color="text.secondary">
           {`名前: ${recruitment.name || "不明"}`}
         </Typography>
@@ -97,14 +126,13 @@ const RecruitmentDetail: React.FC = () => {
           {`合計: ${recruitment.sum ? recruitment.sum.toString() : "不明"}`}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          {`日付: ${formattedDate}`} {/* 日付を表示 */}
+          {`日付: ${formattedDate}`}
         </Typography>
         <Divider sx={{ my: 2 }} />
         <Typography variant="body1" sx={{ mt: 2 }}>
           {recruitment.detail || "詳細がありません"}
         </Typography>
 
-        {/* タグの表示 */}
         <Box sx={{ mt: 2 }}>
           {recruitment.tags && recruitment.tags.length > 0 ? (
             recruitment.tags.map((tag, index) => (
@@ -117,9 +145,8 @@ const RecruitmentDetail: React.FC = () => {
           )}
         </Box>
 
-        {/* ボタンの追加 */}
         <Box sx={{ mt: 3 }}>
-          <Button variant="contained" color="primary">
+          <Button variant="contained" color="primary" onClick={handleJoinClick}>
             応募する
           </Button>
         </Box>

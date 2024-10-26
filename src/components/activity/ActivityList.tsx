@@ -5,9 +5,10 @@ import { updateUser } from "@/utils/updateUser";
 // ActivityList コンポーネント
 interface ActivityListProps {
   user: User;
+  isMe: boolean;
 }
 
-const ActivityList: React.FC<ActivityListProps> = ({ user }) => {
+const ActivityList: React.FC<ActivityListProps> = ({ user, isMe }) => {
   const [events, setEvents] = useState(user.events || []);
   const [newEvent, setNewEvent] = useState({ date: "", description: "" });
 
@@ -38,32 +39,33 @@ const ActivityList: React.FC<ActivityListProps> = ({ user }) => {
   return (
     <div className="max-w-md mx-auto p-4 bg-white shadow-md rounded-lg">
       <h2 className="text-2xl font-semibold mb-4">アクティビティー</h2>
-
-      <form onSubmit={handleAddEvent} className="mb-4">
-        <input
-          type="date"
-          value={newEvent.date}
-          onChange={(e) => setNewEvent({ ...newEvent, date: e.target.value })}
-          className="border border-gray-300 p-2 rounded mr-2"
-          required
-        />
-        <input
-          type="text"
-          value={newEvent.description}
-          onChange={(e) =>
-            setNewEvent({ ...newEvent, description: e.target.value })
-          }
-          placeholder="イベントの説明"
-          className="border border-gray-300 p-2 rounded mr-2"
-          required
-        />
-        <button
-          type="submit"
-          className="bg-blue-500 text-white py-2 px-4 rounded"
-        >
-          イベントを追加
-        </button>
-      </form>
+      {isMe && (
+        <form onSubmit={handleAddEvent} className="mb-4">
+          <input
+            type="date"
+            value={newEvent.date}
+            onChange={(e) => setNewEvent({ ...newEvent, date: e.target.value })}
+            className="border border-gray-300 p-2 rounded mr-2"
+            required
+          />
+          <input
+            type="text"
+            value={newEvent.description}
+            onChange={(e) =>
+              setNewEvent({ ...newEvent, description: e.target.value })
+            }
+            placeholder="イベントの説明"
+            className="border border-gray-300 p-2 rounded mr-2"
+            required
+          />
+          <button
+            type="submit"
+            className="bg-blue-500 text-white py-2 px-4 rounded"
+          >
+            イベントを追加
+          </button>
+        </form>
+      )}
 
       <p className="text-gray-600 mb-4">
         合計イベント数: {sortedEvents.length}
