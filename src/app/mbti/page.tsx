@@ -5,10 +5,30 @@ import { useRouter } from "next/navigation";
 import { Box, Button, Typography, Stack, Checkbox, FormControlLabel, FormGroup } from "@mui/material";
 
 const questions = [
-  "あなたは外向的ですか？",
-  "計画を立てるのが好きですか？",
-  "感情的な決断をしますか？",
-  // 他の質問を追加
+  {
+    category: "外向性",
+    questions: [
+      "あなたは外向的ですか？",
+      "人と話すのが好きですか？",
+      "パーティーに行くのが好きですか？"
+    ]
+  },
+  {
+    category: "計画性",
+    questions: [
+      "計画を立てるのが好きですか？",
+      "スケジュールを守るのが得意ですか？",
+      "目標を設定するのが好きですか？"
+    ]
+  },
+  {
+    category: "感情性",
+    questions: [
+      "感情的な決断をしますか？",
+      "他人の感情に敏感ですか？",
+      "感情を表に出すことが多いですか？"
+    ]
+  }
 ];
 
 const finalQuestion = {
@@ -19,25 +39,28 @@ const finalQuestion = {
 
 const NDTPPage = () => {
   const router = useRouter();
+  const [currentCategoryIndex, setCurrentCategoryIndex] = useState(0);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [answers, setAnswers] = useState<(boolean | string[])[]>([]);
+  const [answers, setAnswers] = useState<boolean[][]>([[], [], [], []]);
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
 
-  const handleAnswer = (answer: boolean | string[]) => {
-    const newAnswers = [...answers, answer];
+  const handleAnswer = (answer: boolean) => {
+    const newAnswers = [...answers];
+    newAnswers[currentCategoryIndex].push(answer);
     setAnswers(newAnswers);
 
-    if (currentQuestionIndex < questions.length - 1) {
+    if (currentQuestionIndex < questions[currentCategoryIndex].questions.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     } else {
-      // 最後の質問に遷移
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
+      // 次のカテゴリに遷移
+      setCurrentQuestionIndex(0);
+      setCurrentCategoryIndex(currentCategoryIndex + 1);
     }
   };
 
   const handleFinalAnswer = async () => {
-    const newAnswers = [...answers, selectedOptions];
-    setAnswers(newAnswers);
+    const newAnswers = [...answers];
+    newAnswers[3] = selectedOptions.map(option => option === "正解");
 
     // バックエンドに結果を送信
     try {
@@ -46,15 +69,15 @@ const NDTPPage = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ id: "620f76c7-1101-446f-9853-3c17c4fe7a6d", mbti: newAnswers }),
+        body: JSON.stringify({ id: "620f76c7-1101-446f-9853-3c17c4fe7a6d", mbti: newAnswers }), // 仮のUUIDを使用
       });
       if (response.ok) {
         router.push('/mbti/result');
       } else {
-        console.error('Error saving results');
+        console.error('結果の保存中にエラーが発生しました');
       }
     } catch (error) {
-      console.error('Error saving results', error);
+      console.error('結果の保存中にエラーが発生しました', error);
     }
 
     // 結果ページに遷移
@@ -72,13 +95,13 @@ const NDTPPage = () => {
 
   return (
     <Box sx={{ maxWidth: "md", width: "100%", margin: "auto", padding: 4 }}>
-      {currentQuestionIndex < questions.length ? (
+      {currentCategoryIndex < questions.length ? (
         <>
           <Typography variant="h4" gutterBottom>
             性格診断
           </Typography>
           <Typography variant="h6" gutterBottom>
-            {questions[currentQuestionIndex]}
+            {questions[currentCategoryIndex].questions[currentQuestionIndex]}
           </Typography>
           <Stack direction="row" spacing={2} justifyContent="center">
             <Button
