@@ -12,7 +12,7 @@ const config: Config = {
       colors: {
         primary: "#2ecee6", //メインカラー
         secondary: "#432ee6", //メインの補助カラー
-        base: "#212121", //背景
+        base: "#ffffff", //背景
         sub_base: "#2F3232", //コンテンツの背景
         content_base: "#3e4242", //コンテンツの中のコンテンツの背景
         border: "#b5b5ba", //枠線
