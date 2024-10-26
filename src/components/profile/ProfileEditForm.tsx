@@ -1,7 +1,5 @@
-// components/profile/ProfileEditForm.tsx
-
 import React, { useState } from "react";
-import { User } from "@/components/profile/options";
+import { User } from "@/types/User";
 
 interface ProfileEditFormProps {
   user: User;
@@ -16,7 +14,11 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
 }) => {
   const [updatedUser, setUpdatedUser] = useState<User>({ ...user });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
+  ) => {
     const { name, value } = e.target;
     setUpdatedUser((prev) => ({ ...prev, [name]: value }));
   };
@@ -44,24 +46,35 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
       </div>
       <div className="mb-4">
         <label className="block text-gray-700">性別</label>
-        <input
-          type="text"
+        <select
           name="sex"
-          value={updatedUser.sex}
+          value={updatedUser.sex?.toString() || ""}
           onChange={handleChange}
           className="mt-1 block w-full border border-gray-300 p-2 rounded"
-        />
+        >
+          <option value="">性別を選択</option>
+          <option value="0">男性</option>
+          <option value="1">女性</option>
+        </select>
       </div>
+
       <div className="mb-4">
         <label className="block text-gray-700">年齢</label>
-        <input
-          type="text"
+        <select
           name="age"
-          value={updatedUser.age}
+          value={updatedUser.age?.toString() || ""}
           onChange={handleChange}
           className="mt-1 block w-full border border-gray-300 p-2 rounded"
-        />
+        >
+          <option value="">年齢を選択</option>
+          {Array.from({ length: 100 }, (_, i) => (
+            <option key={i} value={i + 1}>
+              {i + 1}歳
+            </option>
+          ))}
+        </select>
       </div>
+
       <div className="mb-4">
         <label className="block text-gray-700">場所</label>
         <input
@@ -72,6 +85,18 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
           className="mt-1 block w-full border border-gray-300 p-2 rounded"
         />
       </div>
+
+      <div className="mb-4">
+        <label className="block text-gray-700">メッセージ</label>
+        <textarea
+          name="message"
+          value={updatedUser.message}
+          onChange={handleChange}
+          className="mt-1 block w-full border border-gray-300 p-2 rounded"
+          rows={4} // 行数を指定
+        />
+      </div>
+
       <div className="flex justify-between">
         <button
           type="button"

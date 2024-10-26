@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
 import ProfileCard from "@/components/profile/ProfileCard";
-import { User } from "@/components/profile/options";
+import { User } from "@/types/User";
 import Loading from "@/components/core/Loading";
 import { getUuidFromCookie } from "@/actions/users";
 

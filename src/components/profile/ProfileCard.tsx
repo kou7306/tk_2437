@@ -1,5 +1,5 @@
 import React from "react";
-import { User } from "@/components/profile/options";
+import { User } from "@/types/user";
 import Image from "next/image";
 import ActivityList from "../activity/ActivityList";
 import MbtiGauges from "../activity/Mbti";
@@ -21,7 +21,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
           <Image
             className="h-auto object-cover rounded-full ml-24 mr-24"
             src="/user.svg"
-            alt={user.name}
+            alt={user.name || "User"}
             width={200}
             height={200}
           />
@@ -30,7 +30,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
             {user.name}
           </h2>
           <p className="bg-gray-200 text-center px-4 py-2 rounded">
-            こんにちは
+            {user.message}
           </p>
         </div>
 
@@ -64,7 +64,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
 
         {/* 右側: Activity List */}
         <div className="w-1/2">
-          <ActivityList />
+          <ActivityList user={user} />
         </div>
       </div>
     </div>
