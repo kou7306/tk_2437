@@ -11,4 +11,5 @@ export interface Event {
   url?: string; // イベントのURL
   mbti?: string; // MBTI
   company?: string; // 会社名
+  recruitments?: string[]; // 募集情報
 }

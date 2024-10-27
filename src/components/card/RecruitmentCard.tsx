@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import { Card, CardMedia, CardContent, Typography, Box } from "@mui/material";
 import { Recruitment } from "@/types/Recruitment";
 import axios from "axios";
-import Link from "next/link"; // Linkコンポーネントをインポート
+import Link from "next/link"; // Link component import
 
 const RecruitmentCard: React.FC<Recruitment> = ({
-  id, // IDを受け取る
+  id, // Receive ID
   title,
   name,
   date,
@@ -29,7 +29,7 @@ const RecruitmentCard: React.FC<Recruitment> = ({
         }
       } catch (error) {
         console.error("Error fetching metadata:", error);
-        // エラーが発生した場合、デフォルト画像を使用
+        // Use default image if an error occurs
         setImageSrc("https://placehold.jp/150x150.png");
       }
     };
@@ -41,27 +41,31 @@ const RecruitmentCard: React.FC<Recruitment> = ({
 
   return (
     <Link href={`/recruitment/${id}`} passHref>
-      {" "}
-      {/* リンクを追加 */}
+      {/* Add a link */}
       <Card sx={{ mt: 2, position: "relative", cursor: "pointer" }}>
         <CardMedia
           component="img"
-          sx={{ height: 200, objectFit: "cover" }} // 高さを200pxに固定し、coverでリサイズ
+          sx={{
+            width: "100%", // Set width to 100%
+            height: "auto", // Set height to auto for responsiveness
+            aspectRatio: "16 / 9", // Set aspect ratio (adjust as needed)
+            objectFit: "cover", // Maintain aspect ratio and cover the container
+          }}
           image={imageSrc}
           alt="Recruitment Image"
         />
         <CardContent>
           <Typography variant="h6" component="div">
-            {title || "タイトルがありません"} {/* 募集タイトル */}
+            {title || "タイトルがありません"} {/* Recruitment title */}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            {`イベント名: ${name || "不明"}`} {/* イベント名 */}
+            {`イベント名: ${name || "不明"}`} {/* Event name */}
           </Typography>
           <Typography variant="body2" color="text.secondary">
             {`日付: ${
               date ? new Date(date).toLocaleDateString("ja-JP") : "不明"
             }`}{" "}
-            {/* 日付 */}
+            {/* Date */}
           </Typography>
           <Box
             sx={{
@@ -77,7 +81,7 @@ const RecruitmentCard: React.FC<Recruitment> = ({
           >
             <Typography variant="body2" fontSize="1.2rem">
               {`${participants.length} / ${sum || 0}`}{" "}
-              {/* 参加者数と募集人数 */}
+              {/* Number of participants and total */}
             </Typography>
           </Box>
         </CardContent>
