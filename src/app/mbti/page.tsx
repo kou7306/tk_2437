@@ -1,8 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Box, Button, Typography, Stack, Checkbox, FormControlLabel, FormGroup } from "@mui/material";
+import { getUuidFromCookie } from "@/actions/users";
+
 
 const questions = [
   {
@@ -43,6 +45,22 @@ const NDTPPage = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<boolean[][]>([[], [], [], []]);
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
+  const [uuid, setUuid] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchUuid = async () => {
+      const userId = await getUuidFromCookie();
+      if (userId) {
+        try {
+          setUuid(userId);
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+        }
+      }
+    };
+
+    fetchUuid();
+  }, []);
 
   const handleAnswer = (answer: boolean) => {
     const newAnswers = [...answers];
