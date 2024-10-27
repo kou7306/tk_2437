@@ -1,144 +1,159 @@
 "use client";
-
-import React, { useState, useEffect } from "react";
-import {
-  Box,
-  CircularProgress,
-  Grid,
-  Typography,
-  IconButton,
-} from "@mui/material";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/swiper-bundle.css";
+import { Navigation } from "swiper/modules";
 import EventCard from "@/components/card/EventCard";
 import RecruitmentCard from "@/components/card/RecruitmentCard";
-import { getNewEvents } from "@/utils/getFilterEvent";
-import { getNewRecruitments } from "@/utils/getFilterRecruitment";
-import { Event } from "@/types/Event";
-import { Recruitment } from "@/types/Recruitment";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward"; // Import the right arrow icon
-import { useRouter } from "next/navigation"; // Import useRouter for navigation
+import { Button, IconButton, Typography, Box } from "@mui/material";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { getRecruitmentWithEvent } from "@/utils/getRecruitWithEvent";
 
-export default function Home() {
-  const [loading, setLoading] = useState(false);
-  const [eventdataList, setEventList] = useState<Event[]>([]);
-  const [recruitmentList, setRecruitmentList] = useState<Recruitment[]>([]);
-  const router = useRouter(); // Initialize router
+const EventSwiperPage = () => {
+  interface Event {
+    id: string;
+    name: string;
+    detail: string;
+    place: string;
+    period: {
+      start: string;
+      end: string;
+    };
+    tags: string[];
+    url: string;
+    company?: string;
+    recruitments?: Recruitment[];
+  }
 
-  // 新規イベントデータを取得する関数
-  const fetchEventdata = async () => {
-    setLoading(true);
-    setEventList([]); // Clear previous events
+  interface Recruitment {
+    id: string;
+    title: string;
+    sum: number;
+    participants: number;
+    event_url: string;
+    tags?: string[];
+  }
 
-    try {
-      const events = await getNewEvents("4"); // 例えば、10件のイベントを取得
-      setEventList(events);
-    } catch (error) {
-      console.error("Failed to fetch Event", error);
-      setEventList([]);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const [events, setEvents] = useState<Event[]>([]); // State for API data
+  const [currentIndex, setCurrentIndex] = useState(0);
 
-  // 新規募集データを取得する関数
-  const fetchRecruitmentData = async () => {
-    setLoading(true);
-    setRecruitmentList([]); // Clear previous recruitments
-
-    try {
-      const recruitments = await getNewRecruitments("4"); // 4件の募集を取得
-      setRecruitmentList(recruitments);
-    } catch (error) {
-      console.error("Failed to fetch Recruitment", error);
-      setRecruitmentList([]);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // コンポーネントがマウントされたときにイベントデータを取得
+  // Fetch data from API
   useEffect(() => {
-    fetchEventdata();
-    fetchRecruitmentData();
+    const fetchEvents = async () => {
+      try {
+        // Pass the array of event IDs as needed, replace `["1", "2"]` with actual IDs you need
+        const eventIds = [
+          "7aef6c32-bbcd-474b-88dd-ebca3cf17102",
+          "d89c44fe-31ce-44b5-9ce4-095de30b42d1",
+        ];
+        const data = await getRecruitmentWithEvent(eventIds);
+        setEvents(data);
+      } catch (error) {
+        console.error("Error fetching events with recruitments:", error);
+      }
+    };
+
+    fetchEvents();
   }, []);
 
   return (
-    <Box sx={{ maxWidth: 1200, margin: "auto", mt: 5 }}>
-      {loading ? (
-        <CircularProgress sx={{ mt: 2 }} />
-      ) : (
-        <>
-          {/* 新規募集セクション */}
-          <Box sx={{ mb: 4 }}>
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <Typography variant="h5" component="h2" sx={{ mb: 2 }}>
-                新規募集
-              </Typography>
-              <Box sx={{ display: "flex", alignItems: "center" }}>
-                <Typography
-                  variant="body2"
-                  sx={{ display: "inline", mr: 1, cursor: "pointer" }}
-                  onClick={() => router.push("/recruitment")}
-                >
-                  詳細はこちら
-                </Typography>
-                <IconButton
-                  size="small"
-                  onClick={() => router.push("/recruitment")}
-                >
-                  <ArrowForwardIcon fontSize="small" />
-                </IconButton>
-              </Box>
-            </Box>
-            <Grid container spacing={3}>
-              {recruitmentList.map((recruitment, index) => (
-                <Grid item xs={15} sm={8} md={4} lg={3} key={index}>
-                  <RecruitmentCard {...recruitment} />
-                </Grid>
-              ))}
-            </Grid>
-          </Box>
+    <Box sx={{ textAlign: "center", padding: "20px", position: "relative" }}>
+      <Typography variant="h4" gutterBottom>
+        あなたにおすすめのイベント
+      </Typography>
 
-          {/* おすすめイベントセクション */}
-          <Box sx={{ mb: 4 }}>
+      {/* Swiper */}
+      <Swiper
+        modules={[Navigation]}
+        navigation={{
+          nextEl: ".swiper-button-next",
+          prevEl: ".swiper-button-prev",
+        }}
+        spaceBetween={30}
+        slidesPerView={1}
+        onSlideChange={(swiper) => setCurrentIndex(swiper.activeIndex)}
+        style={{
+          width: "80%",
+          maxWidth: "800px",
+        }}
+      >
+        {events.map((event) => (
+          <SwiperSlide key={event.id}>
+            <EventCard
+              id={event.id}
+              name={event.name}
+              detail={event.detail}
+              place={event.place}
+              period={event.period}
+              tags={event.tags}
+              url={event.url}
+              company={event.company || "Your Company Name"}
+            />
+          </SwiperSlide>
+        ))}
+      </Swiper>
+
+      <IconButton
+        className="swiper-button-prev"
+        sx={{
+          position: "fixed",
+          left: "30%",
+          top: "50%",
+          transform: "translateY(-50%)",
+          zIndex: 10,
+        }}
+      >
+        <ArrowBackIcon />
+      </IconButton>
+      <IconButton
+        className="swiper-button-next"
+        sx={{
+          position: "fixed",
+          right: "30%",
+          top: "50%",
+          transform: "translateY(-50%)",
+          zIndex: 10,
+        }}
+      >
+        <ArrowForwardIcon />
+      </IconButton>
+
+      {/* Selected event's related recruitment information */}
+      <Box sx={{ marginTop: "20px" }}>
+        {events.length > 0 && (
+          <>
+            <Typography variant="h6">
+              Recruitments for {events[currentIndex]?.name}
+            </Typography>
             <Box
               sx={{
                 display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
+                justifyContent: "center",
+                gap: "15px",
+                flexWrap: "wrap",
               }}
             >
-              <Typography variant="h5" component="h2" sx={{ mb: 2 }}>
-                おすすめイベント
-              </Typography>
-              <Box sx={{ display: "flex", alignItems: "center" }}>
-                <Typography
-                  variant="body2"
-                  sx={{ display: "inline", mr: 1, cursor: "pointer" }}
-                  onClick={() => router.push("/event")}
-                >
-                  詳細はこちら
-                </Typography>
-                <IconButton size="small" onClick={() => router.push("/event")}>
-                  <ArrowForwardIcon fontSize="small" />
-                </IconButton>
-              </Box>
-            </Box>
-            <Grid container spacing={2}>
-              {eventdataList.map((eventdata, index) => (
-                <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
-                  <EventCard {...eventdata} />
-                </Grid>
+              {events[currentIndex]?.recruitments?.map((recruitment) => (
+                <RecruitmentCard
+                  key={recruitment.id}
+                  id={recruitment.id}
+                  title={recruitment.title}
+                  name={events[currentIndex].name}
+                  date={new Date(events[currentIndex].period.start)}
+                  sum={recruitment.sum.toString()}
+                  participants={[recruitment.participants.toString()]}
+                  event_url={recruitment.event_url}
+                  tags={recruitment.tags || []}
+                />
               ))}
-            </Grid>
-          </Box>
-        </>
-      )}
+            </Box>
+          </>
+        )}
+      </Box>
     </Box>
   );
-}
+};
+
+export default EventSwiperPage;
