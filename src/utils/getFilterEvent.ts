@@ -20,7 +20,7 @@ export const getFilterEvent = async (location: string, tags: string[]) => {
   return response.json(); // JSON形式でレスポンスを返す
 };
 
-import { Event } from "@/types/Event";
+import { Event } from "@/types/event";
 
 export const getNewEvents = async (limit: string): Promise<Event[]> => {
   const response = await fetch(

@@ -2,9 +2,16 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Box, Button, Typography, Stack, Checkbox, FormControlLabel, FormGroup } from "@mui/material";
+import {
+  Box,
+  Button,
+  Typography,
+  Stack,
+  Checkbox,
+  FormControlLabel,
+  FormGroup,
+} from "@mui/material";
 import { getUuidFromCookie } from "@/actions/users";
-
 
 const questions = [
   {
@@ -12,31 +19,31 @@ const questions = [
     questions: [
       "あなたは外向的ですか？",
       "人と話すのが好きですか？",
-      "パーティーに行くのが好きですか？"
-    ]
+      "パーティーに行くのが好きですか？",
+    ],
   },
   {
     category: "計画性",
     questions: [
       "計画を立てるのが好きですか？",
       "スケジュールを守るのが得意ですか？",
-      "目標を設定するのが好きですか？"
-    ]
+      "目標を設定するのが好きですか？",
+    ],
   },
   {
     category: "感情性",
     questions: [
       "感情的な決断をしますか？",
       "他人の感情に敏感ですか？",
-      "感情を表に出すことが多いですか？"
-    ]
-  }
+      "感情を表に出すことが多いですか？",
+    ],
+  },
 ];
 
 const finalQuestion = {
   question: "この画像についてどう思いますか？",
   imageUrl: "/path/to/image.jpg", // 画像のパスを指定
-  options: ["選択肢1", "選択肢2", "選択肢3", "選択肢4"]
+  options: ["選択肢1", "選択肢2", "選択肢3", "選択肢4"],
 };
 
 const NDTPPage = () => {
@@ -67,7 +74,10 @@ const NDTPPage = () => {
     newAnswers[currentCategoryIndex].push(answer);
     setAnswers(newAnswers);
 
-    if (currentQuestionIndex < questions[currentCategoryIndex].questions.length - 1) {
+    if (
+      currentQuestionIndex <
+      questions[currentCategoryIndex].questions.length - 1
+    ) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     } else {
       // 次のカテゴリに遷移
@@ -78,35 +88,43 @@ const NDTPPage = () => {
 
   const handleFinalAnswer = async () => {
     const newAnswers = [...answers];
-    newAnswers[3] = selectedOptions.map(option => option === "正解");
+    newAnswers[3] = selectedOptions.map((option) => option === "正解");
 
     // バックエンドに結果を送信
     try {
-      const response = await fetch('http://localhost:8080/user/register-mbti', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ id: "620f76c7-1101-446f-9853-3c17c4fe7a6d", mbti: newAnswers }), // 仮のUUIDを使用
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/user/register-mbti`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id: uuid,
+            mbti: newAnswers,
+          }), // 仮のUUIDを使用
+        }
+      );
       if (response.ok) {
-        router.push('/mbti/result');
+        router.push("/mbti/result");
       } else {
-        console.error('結果の保存中にエラーが発生しました');
+        console.error("結果の保存中にエラーが発生しました");
       }
     } catch (error) {
-      console.error('結果の保存中にエラーが発生しました', error);
+      console.error("結果の保存中にエラーが発生しました", error);
     }
 
     // 結果ページに遷移
-    const queryString = new URLSearchParams({ answers: JSON.stringify(newAnswers) }).toString();
+    const queryString = new URLSearchParams({
+      answers: JSON.stringify(newAnswers),
+    }).toString();
     router.push(`/mbti/result?${queryString}`);
   };
 
   const handleOptionChange = (option: string) => {
-    setSelectedOptions(prevOptions =>
+    setSelectedOptions((prevOptions) =>
       prevOptions.includes(option)
-        ? prevOptions.filter(o => o !== option)
+        ? prevOptions.filter((o) => o !== option)
         : [...prevOptions, option]
     );
   };
@@ -146,9 +164,13 @@ const NDTPPage = () => {
           <Typography variant="h6" gutterBottom>
             {finalQuestion.question}
           </Typography>
-          <img src={finalQuestion.imageUrl} alt="Final Question" style={{ width: "100%", height: "auto" }} />
+          <img
+            src={finalQuestion.imageUrl}
+            alt="Final Question"
+            style={{ width: "100%", height: "auto" }}
+          />
           <FormGroup>
-            {finalQuestion.options.map(option => (
+            {finalQuestion.options.map((option) => (
               <FormControlLabel
                 key={option}
                 control={
