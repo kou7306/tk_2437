@@ -42,7 +42,6 @@ const EventDetail: React.FC = () => {
   useEffect(() => {
     const fetchMetadata = async () => {
       if (event?.url) {
-        // Ensure event.url is defined
         try {
           const response = await axios.get(
             `/api/metadata?url=${encodeURIComponent(event.url)}`
@@ -53,62 +52,77 @@ const EventDetail: React.FC = () => {
           }
         } catch (error) {
           console.error("Error fetching metadata:", error);
-          // エラーが発生した場合、デフォルト画像を使用
           setImageSrc("https://placehold.jp/150x150.png");
         }
       }
     };
 
     fetchMetadata();
-  }, [event]); // Changed dependency to event
+  }, [event]);
 
   if (loading) {
-    return <CircularProgress />; // ローディング中のスピナー
+    return <CircularProgress />;
   }
 
   if (error) {
-    return <Typography color="error">{error}</Typography>; // エラーメッセージ
+    return <Typography color="error">{error}</Typography>;
   }
 
   if (!event) {
-    return <Typography>イベントが見つかりませんでした。</Typography>; // イベントが存在しない場合のメッセージ
+    return <Typography>イベントが見つかりませんでした。</Typography>;
   }
 
   return (
-    <Card sx={{ mt: 2 }}>
+    <Card sx={{ mt: 2, boxShadow: "none" }}>
+      {" "}
+      {/* Set boxShadow to none */}
       <CardContent>
         {/* 画像の表示 */}
-        <Box sx={{ mb: 2, textAlign: "center" }}>
+        <Box sx={{ mb: 2, display: "flex", justifyContent: "center" }}>
           <img
             src={imageSrc}
             alt={event.name || "イベント画像"}
-            style={{ maxWidth: "100%", height: "auto" }}
+            style={{
+              width: "90%", // Set the width to a percentage of the container
+              maxWidth: "600px", // Limit the maximum width to 600px
+              height: "auto",
+              aspectRatio: "16 / 9", // Maintain 16:9 aspect ratio
+              borderRadius: "8px", // Optional: Add some rounding to the corners
+            }}
           />
         </Box>
 
-        <Typography variant="h5" component="div">
+        {/* Center-aligning and enlarging text */}
+        <Typography variant="h4" component="div" align="center">
           {event.name || "タイトルがありません"}
         </Typography>
-        <Typography variant="body2" color="text.secondary">
+        <Typography variant="h6" color="text.secondary" align="center">
           {`会社名: ${event.company || "不明"}`}
         </Typography>
-        <Typography variant="body2" color="text.secondary">
+        <Typography variant="h6" color="text.secondary" align="center">
           {`開催地: ${event.place || "不明"}`}
         </Typography>
-        <Typography variant="body2" color="text.secondary">
+        <Typography variant="h6" color="text.secondary" align="center">
           {event.period
             ? `${event.period.start} ～ ${event.period.end}`
             : "期間がありません"}
         </Typography>
-        <Typography variant="body2" sx={{ mt: 2 }}>
+        <Typography variant="body1" sx={{ mt: 2 }} align="center">
           {event.detail || "詳細がありません"}
         </Typography>
 
         {/* タグの表示 */}
-        <Box sx={{ mt: 2 }}>
+        <Box
+          sx={{
+            mt: 2,
+            display: "flex",
+            justifyContent: "center",
+            flexWrap: "wrap",
+          }}
+        >
           {event.tags && event.tags.length > 0 ? (
             event.tags.map((tag, index) => (
-              <Chip key={index} label={tag} sx={{ mr: 1 }} />
+              <Chip key={index} label={tag} sx={{ mr: 1, mb: 1 }} /> // Add margin-bottom for spacing
             ))
           ) : (
             <Typography variant="body2" color="text.secondary">

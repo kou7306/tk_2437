@@ -42,7 +42,7 @@ const questions = [
 
 const finalQuestion = {
   question: "この画像についてどう思いますか？",
-  imageUrl: "/path/to/image.jpg", // 画像のパスを指定
+  imageUrl: "/path/to/image.jpg",
   options: ["選択肢1", "選択肢2", "選択肢3", "選択肢4"],
 };
 
@@ -58,11 +58,9 @@ const NDTPPage = () => {
     const fetchUuid = async () => {
       const userId = await getUuidFromCookie();
       if (userId) {
-        try {
-          setUuid(userId);
-        } catch (error) {
-          console.error("Error fetching user data:", error);
-        }
+        setUuid(userId);
+      } else {
+        console.error("UUID retrieval failed.");
       }
     };
 
@@ -80,7 +78,6 @@ const NDTPPage = () => {
     ) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     } else {
-      // 次のカテゴリに遷移
       setCurrentQuestionIndex(0);
       setCurrentCategoryIndex(currentCategoryIndex + 1);
     }
@@ -90,35 +87,24 @@ const NDTPPage = () => {
     const newAnswers = [...answers];
     newAnswers[3] = selectedOptions.map((option) => option === "正解");
 
-    // バックエンドに結果を送信
     try {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/user/register-mbti`,
         {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            id: uuid,
-            mbti: newAnswers,
-          }), // 仮のUUIDを使用
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id: uuid, mbti: newAnswers }),
         }
       );
+
       if (response.ok) {
-        router.push("/mbti/result");
+        router.push("/");
       } else {
-        console.error("結果の保存中にエラーが発生しました");
+        console.error("Failed to save the results.");
       }
     } catch (error) {
-      console.error("結果の保存中にエラーが発生しました", error);
+      console.error("Error occurred while saving results:", error);
     }
-
-    // 結果ページに遷移
-    const queryString = new URLSearchParams({
-      answers: JSON.stringify(newAnswers),
-    }).toString();
-    router.push(`/mbti/result?${queryString}`);
   };
 
   const handleOptionChange = (option: string) => {
@@ -141,15 +127,25 @@ const NDTPPage = () => {
           </Typography>
           <Stack direction="row" spacing={2} justifyContent="center">
             <Button
-              variant="contained"
-              color="primary"
+              variant="outlined"
+              sx={{
+                backgroundColor: "white",
+                color: "secondary.main",
+                borderColor: "secondary.main",
+                "&:hover": { backgroundColor: "error.main", color: "white" },
+              }}
               onClick={() => handleAnswer(true)}
             >
               はい
             </Button>
             <Button
-              variant="contained"
-              color="secondary"
+              variant="outlined"
+              sx={{
+                backgroundColor: "white",
+                color: "secondary.main",
+                borderColor: "secondary.main",
+                "&:hover": { backgroundColor: "error.main", color: "white" },
+              }}
               onClick={() => handleAnswer(false)}
             >
               いいえ

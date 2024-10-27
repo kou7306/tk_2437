@@ -6,10 +6,12 @@ import "swiper/swiper-bundle.css";
 import { Navigation } from "swiper/modules";
 import EventCard from "@/components/card/EventCard";
 import RecruitmentCard from "@/components/card/RecruitmentCard";
-import { Button, IconButton, Typography, Box } from "@mui/material";
+import { Button, IconButton, Typography, Box, Divider } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { getRecruitmentWithEvent } from "@/utils/getRecruitWithEvent";
+import { getSuggestEvent } from "@/utils/getSuggestEvent";
+import { getUuidFromCookie } from "@/actions/users";
 
 const EventSwiperPage = () => {
   interface Event {
@@ -38,16 +40,27 @@ const EventSwiperPage = () => {
 
   const [events, setEvents] = useState<Event[]>([]); // State for API data
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [uuid, setUuid] = useState<string | null>(null);
 
-  // Fetch data from API
   useEffect(() => {
+    // ユーザーデータを取得する関数
+    const fetchProfile = async () => {
+      const userId = await getUuidFromCookie();
+      if (userId) {
+        setUuid(userId);
+      }
+    };
+
+    fetchProfile();
+  }, []);
+
+  // `uuid`の値が変更されたときに`fetchEvents`を実行
+  useEffect(() => {
+    if (!uuid) return; // uuidが取得されていない場合は終了
+
     const fetchEvents = async () => {
       try {
-        // Pass the array of event IDs as needed, replace `["1", "2"]` with actual IDs you need
-        const eventIds = [
-          "7aef6c32-bbcd-474b-88dd-ebca3cf17102",
-          "d89c44fe-31ce-44b5-9ce4-095de30b42d1",
-        ];
+        const eventIds = await getSuggestEvent(uuid);
         const data = await getRecruitmentWithEvent(eventIds);
         setEvents(data);
       } catch (error) {
@@ -56,7 +69,7 @@ const EventSwiperPage = () => {
     };
 
     fetchEvents();
-  }, []);
+  }, [uuid]); // uuidの変更を監視
 
   return (
     <Box sx={{ textAlign: "center", padding: "20px", position: "relative" }}>
@@ -121,12 +134,18 @@ const EventSwiperPage = () => {
       </IconButton>
 
       {/* Selected event's related recruitment information */}
-      <Box sx={{ marginTop: "20px" }}>
+      <Box sx={{ marginTop: "40px" }}>
         {events.length > 0 && (
           <>
-            <Typography variant="h6">
-              Recruitments for {events[currentIndex]?.name}
-            </Typography>
+            <Typography variant="h5">募集</Typography>
+            <Divider
+              sx={{
+                width: "50%",
+                margin: "0 auto",
+                borderColor: "black",
+                marginBottom: "20px",
+              }}
+            />
             <Box
               sx={{
                 display: "flex",

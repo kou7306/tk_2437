@@ -46,7 +46,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user, isMe, onEdit }) => {
             <div className="flex justify-center mt-4">
               <button
                 onClick={onEdit}
-                className="w-48 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition"
+                className="w-48 bg-primary text-white py-2 px-4 rounded hover:bg-blue-600 transition"
               >
                 編集する
               </button>
