@@ -76,7 +76,11 @@ const EventCard: React.FC<Event> = ({
           <Box sx={{ mt: 1 }}>
             {tags && tags.length > 0 ? (
               tags.map((tag, index) => (
-                <Chip key={index} label={tag} sx={{ mr: 1 }} />
+                <Chip
+                  key={index}
+                  label={tag}
+                  sx={{ mr: 1, mb: 1 }} // Add margin-bottom to increase vertical space between tags
+                />
               ))
             ) : (
               <Typography variant="body2" color="text.secondary">

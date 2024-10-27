@@ -9,7 +9,7 @@ import Providers from "./Providers";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "GeekLink",
+  title: "Nazomate",
 };
 
 export default async function RootLayout({

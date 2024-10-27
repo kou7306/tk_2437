@@ -19,7 +19,7 @@ const Header = () => {
       <div className="container mx-auto flex justify-between items-center py-4 px-6">
         <div className="text-2xl font-bold">
           <a href="/" className="flex items-center">
-            <span className="text-text">Nazomate</span>
+            <span className="text-primary">Nazomate</span>
           </a>
         </div>
         <nav className="flex space-x-6">
@@ -69,7 +69,7 @@ const Header = () => {
               <div className="flex flex-col items-center text-center">
                 <a
                   href="/my-page"
-                  className="block px-8 py-3 my-3 text-sm bg-primary text-black  rounded"
+                  className="block px-8 py-3 my-3 text-sm bg-primary text-white  rounded"
                 >
                   マイページ
                 </a>

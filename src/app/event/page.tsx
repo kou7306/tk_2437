@@ -1,25 +1,26 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import EventList from "@/components/event/EventList";
-import FilterModal from "@/components/modal/FilterModal"; // フィルターモーダルをインポート
+import FilterModal from "@/components/modal/FilterModal"; // Import filter modal
 import { Box, Typography, Button } from "@mui/material";
 import { Event } from "@/types/Event";
 import { getNewEvents, getFilterEvent } from "@/utils/getFilterEvent";
+import Link from "next/link"; // Import Link for navigation
 
 const HomePage: React.FC = () => {
   const [events, setEvents] = useState<Event[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [isModalOpen, setModalOpen] = useState(false); // モーダルの状態
-  const [selectedLocation, setSelectedLocation] = useState(""); // 選択した場所
-  const [selectedTags, setSelectedTags] = useState<string[]>([]); // 選択したタグ
+  const [isModalOpen, setModalOpen] = useState(false); // Modal state
+  const [selectedLocation, setSelectedLocation] = useState(""); // Selected location
+  const [selectedTags, setSelectedTags] = useState<string[]>([]); // Selected tags
 
-  // 初期イベントの取得
+  // Fetch initial events
   useEffect(() => {
     const fetchEvents = async () => {
       try {
         setIsLoading(true);
-        const newEvents = await getNewEvents("9"); // 必要に応じてIDを変更
+        const newEvents = await getNewEvents("9"); // Adjust ID as needed
         setEvents(newEvents);
         setError(null);
       } catch (err) {
@@ -33,14 +34,14 @@ const HomePage: React.FC = () => {
     fetchEvents();
   }, []);
 
-  // 検索を実行する関数
+  // Execute search
   const handleSearch = async (location: string, tags: string[]) => {
     setSelectedLocation(location);
     setSelectedTags(tags);
 
     try {
       const fetchedEvents = await getFilterEvent(location, tags);
-      setEvents(fetchedEvents); // フィルタリングされたイベントをセット
+      setEvents(fetchedEvents); // Set filtered events
       console.log("取得したイベント:", fetchedEvents);
     } catch (error) {
       console.error("Error fetching events:", error);
@@ -49,16 +50,24 @@ const HomePage: React.FC = () => {
 
   return (
     <Box sx={{ maxWidth: 1200, margin: "auto", mt: 5 }}>
-      <Typography variant="h5" component="h2" sx={{ mb: 2 }}>
-        新規募集
-      </Typography>
+      {/* Flex container for header and buttons */}
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "flex-end", // Align to the right
+          mb: 2,
+          gap: 2, // Add some space between buttons
+        }}
+      >
+        <Button variant="contained" onClick={() => setModalOpen(true)}>
+          絞り込み
+        </Button>
+        <Link href="/create-event" passHref>
+          <Button variant="contained">イベント作成</Button>
+        </Link>
+      </Box>
 
-      {/* フィルターボタン */}
-      <Button variant="contained" onClick={() => setModalOpen(true)}>
-        絞り込み
-      </Button>
-
-      {/* フィルターモーダル */}
+      {/* Filter modal */}
       <FilterModal
         isOpen={isModalOpen}
         onRequestClose={() => setModalOpen(false)}
@@ -70,7 +79,7 @@ const HomePage: React.FC = () => {
       ) : error ? (
         <Typography color="error">{error}</Typography>
       ) : (
-        <EventList events={events} /> // 取得したイベントを表示
+        <EventList events={events} /> // Display fetched events
       )}
     </Box>
   );

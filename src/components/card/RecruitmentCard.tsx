@@ -41,7 +41,6 @@ const RecruitmentCard: React.FC<Recruitment> = ({
 
   return (
     <Link href={`/recruitment/${id}`} passHref>
-      {/* Add a link */}
       <Card sx={{ mt: 2, position: "relative", cursor: "pointer" }}>
         <CardMedia
           component="img"
@@ -54,7 +53,9 @@ const RecruitmentCard: React.FC<Recruitment> = ({
           image={imageSrc}
           alt="Recruitment Image"
         />
-        <CardContent>
+        <CardContent sx={{ paddingBottom: "60px" }}>
+          {" "}
+          {/* Padding to avoid overlap */}
           <Typography variant="h6" component="div">
             {title || "タイトルがありません"} {/* Recruitment title */}
           </Typography>
@@ -67,24 +68,22 @@ const RecruitmentCard: React.FC<Recruitment> = ({
             }`}{" "}
             {/* Date */}
           </Typography>
-          <Box
-            sx={{
-              position: "absolute",
-              bottom: 16,
-              right: 16,
-              backgroundColor: "rgba(255, 255, 255, 0.8)",
-              borderRadius: 1,
-              padding: "8px 12px",
-              boxShadow: 1,
-              zIndex: 1,
-            }}
-          >
-            <Typography variant="body2" fontSize="1.2rem">
-              {`${participants.length} / ${sum || 0}`}{" "}
-              {/* Number of participants and total */}
-            </Typography>
-          </Box>
         </CardContent>
+        <Box
+          sx={{
+            position: "absolute",
+            bottom: 16,
+            right: 16,
+            borderRadius: 1,
+            padding: "8px 12px",
+            zIndex: 1,
+          }}
+        >
+          <Typography variant="body2" fontSize="1.2rem">
+            {`${participants.length} / ${sum || 0}`}{" "}
+            {/* Number of participants and total */}
+          </Typography>
+        </Box>
       </Card>
     </Link>
   );
