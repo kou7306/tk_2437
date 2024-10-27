@@ -19,49 +19,41 @@ const Header = () => {
       <div className="container mx-auto flex justify-between items-center py-4 px-6">
         <div className="text-2xl font-bold">
           <a href="/" className="flex items-center">
-            <span className="text-primary">Nazomate</span>
+            <span className="text-text">Nazomate</span>
           </a>
         </div>
         <nav className="flex space-x-6">
           <a
-            href="/conversation"
+            href="/event"
             className={`text-text hover:text-primary ${
-              isActive("/conversation") ? "text-primary" : ""
-            }`}
-          >
-            メッセージ
-          </a>
-          <a
-            href="/group-list"
-            className={`text-text hover:text-primary ${
-              isActive("/group-list") ? "text-primary" : ""
-            }`}
-          >
-            グループ
-          </a>
-          <a
-            href="/team-recruitments"
-            className={`text-text hover:text-primary ${
-              isActive("/team-recruitments") ? "text-primary" : ""
+              isActive("/event") ? "text-primary" : ""
             }`}
           >
             イベント
           </a>
           <a
-            href="/ranking"
+            href="/recruitment"
             className={`text-text hover:text-primary ${
-              isActive("/ranking") ? "text-primary" : ""
+              isActive("/recruitment") ? "text-primary" : ""
             }`}
           >
-            ランキング
+            募集
           </a>
           <a
-            href="/suggest-users"
+            href="/create-event"
             className={`text-text hover:text-primary ${
-              isActive("/suggest-users") ? "text-primary" : ""
+              isActive("/create-event") ? "text-primary" : ""
             }`}
           >
-            おすすめユーザー
+            イベント作成
+          </a>
+          <a
+            href="/create-recruitment"
+            className={`text-text hover:text-primary ${
+              isActive("/create-recruitment") ? "text-primary" : ""
+            }`}
+          >
+            募集作成
           </a>
         </nav>
         <div className="relative">

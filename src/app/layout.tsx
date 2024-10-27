@@ -20,7 +20,7 @@ export default async function RootLayout({
   const user = await getUser();
   return (
     <html lang="ja">
-      <body className={`${inter.className} bg-base text-text`}>
+      <body className={`${inter.className} bg-base text-black`}>
         {user != null && <Header />}
         <Providers>
           <main className="pt-20 text-font">{children}</main>

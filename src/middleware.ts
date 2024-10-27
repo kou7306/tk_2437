@@ -12,7 +12,14 @@ export async function middleware(request: NextRequest) {
 
   const user = await getUser(request, response);
 
-  if (path === "/" && !user) {
+  // ログインしていない場合、特定のパスへのリダイレクトを実行
+  if (
+    (path === "/" ||
+      path === "/my-page" ||
+      path === "/event" ||
+      path === "/recruitment") &&
+    !user
+  ) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 

@@ -40,21 +40,6 @@ async function LoginPage() {
         >
           <Stack spacing={4}>
             <LoginForm scene="sign-in" />
-            <Box position="relative" mt={2}>
-              <Chip
-                label="おすすめ"
-                color="secondary"
-                size="small"
-                sx={{
-                  position: "absolute",
-                  top: -10,
-                  left: -10,
-                  fontWeight: "bold",
-                  color: "text.primary",
-                }}
-              />
-              <LoginButton provider="github" />
-            </Box>
             <LoginButton provider="google" />
             <Box pt={4} display="flex" justifyContent="flex-end">
               <SignInButton isGuest />

@@ -4,6 +4,7 @@ import { CookieOptions } from "@supabase/ssr";
 import { getSupabaseAuth } from "../lib/auth";
 import { Provider } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
+import axios from "axios";
 
 // Cookieの設定オプション
 const cookieOptions: CookieOptions = {
@@ -77,13 +78,15 @@ export const signInAction = async (email: string, password: string) => {
   } catch (error: any) {
     if (error.status === 400) {
       return {
-        errorMessage: "無効なログイン情報です。メールアドレスとパスワードを確認してください。",
+        errorMessage:
+          "無効なログイン情報です。メールアドレスとパスワードを確認してください。",
       };
     }
     return { errorMessage: "サインインに失敗しました" };
   }
 };
 
+// サインアップアクション
 export const signUpAction = async (email: string, password: string) => {
   try {
     const { data, error } = await getSupabaseAuth().signUp({
@@ -94,15 +97,29 @@ export const signUpAction = async (email: string, password: string) => {
 
     if (data.user) {
       setUuidCookie(data.user.id);
+      await addUserToDatabase(data.user.id); // ユーザーIDをデータベースに追加
     }
 
     return { errorMessage: null };
   } catch (error: any) {
     if (error.status === 429 && error.code === "over_email_send_rate_limit") {
       return {
-        errorMessage: "リクエストの上限に達しました。しばらくしてから再度お試しください。",
+        errorMessage:
+          "リクエストの上限に達しました。しばらくしてから再度お試しください。",
       };
     }
     return { errorMessage: "サインアップに失敗しました" };
+  }
+};
+
+// ユーザーIDをAPIに追加する関数
+const addUserToDatabase = async (userId: string) => {
+  try {
+    await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/user/register`, {
+      id: userId,
+    });
+  } catch (error) {
+    console.error("Error adding user to database:", error);
+    throw new Error("ユーザーの追加に失敗しました");
   }
 };
