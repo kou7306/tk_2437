@@ -26,7 +26,7 @@ function SignInButton({
       console.log(email, password);
       const { errorMessage } = await signInAction(email, password);
       if (!errorMessage) {
-        router.push("/");
+        router.push("/mbti");
       } else {
         toast.error(errorMessage);
       }
