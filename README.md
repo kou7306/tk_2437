@@ -75,3 +75,6 @@ YouTubeやテレビ番組などで存在を知っている人は増えてきて�
 * 特に力を入れた部分をファイルリンク、またはcommit_idを記載してください。
 
   診断機能
+
+## デモ動画
+https://drive.google.com/file/d/1d34l2a2PvLRNeBhogDydL13qwaaRiNLz/view?usp=sharing
