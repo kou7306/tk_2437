@@ -6,7 +6,7 @@ import "swiper/swiper-bundle.css";
 import { Navigation } from "swiper/modules";
 import EventCard from "@/components/card/EventCard";
 import RecruitmentCard from "@/components/card/RecruitmentCard";
-import { Button, IconButton, Typography, Box } from "@mui/material";
+import { Button, IconButton, Typography, Box, Divider } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { getRecruitmentWithEvent } from "@/utils/getRecruitWithEvent";
@@ -121,12 +121,18 @@ const EventSwiperPage = () => {
       </IconButton>
 
       {/* Selected event's related recruitment information */}
-      <Box sx={{ marginTop: "20px" }}>
+      <Box sx={{ marginTop: "40px" }}>
         {events.length > 0 && (
           <>
-            <Typography variant="h6">
-              Recruitments for {events[currentIndex]?.name}
-            </Typography>
+            <Typography variant="h5">募集</Typography>
+            <Divider
+              sx={{
+                width: "50%",
+                margin: "0 auto",
+                borderColor: "black",
+                marginBottom: "20px",
+              }}
+            />
             <Box
               sx={{
                 display: "flex",

@@ -60,7 +60,7 @@ const ActivityList: React.FC<ActivityListProps> = ({ user, isMe }) => {
           />
           <button
             type="submit"
-            className="bg-blue-500 text-white py-2 px-4 rounded"
+            className="bg-primary text-white py-2 px-4 rounded"
           >
             イベントを追加
           </button>

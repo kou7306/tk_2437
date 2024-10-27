@@ -4,29 +4,29 @@ import { createTheme } from "@mui/material";
 const theme = createTheme({
   palette: {
     primary: {
-      main: "#674598", // メインカラー
-      contrastText: "#2ecee6",
+      main: "#6a2c91", // メインカラー
+      contrastText: "#f3e5f5", // コントラスト用のテキスト色
     },
     secondary: {
-      main: "#674598", // メインの補助カラー
-      contrastText: "#2c64c5",
+      main: "#9b59b6", // メインの補助カラー
+      contrastText: "#ffffff", // コントラスト用のテキスト色
     },
     background: {
       default: "#ffffff", // 背景
-      paper: "#fffffff", // コンテンツの背景
+      paper: "#ffffff", // コンテンツの背景
     },
     text: {
       primary: "#000000", // テキスト
-      secondary: "#000000", // 枠線
+      secondary: "#000000", // サブテキスト
     },
     error: {
-      main: "#ee223c", // メインとは反対の色
+      main: "#ab47bc", // エラーカラー
     },
     info: {
-      main: "#674598", //hover時の色
+      main: "#8e24aa", // 情報表示用の色
     },
     warning: {
-      main: "#3e4242", // 黒の中のコンテンツ
+      main: "#5e35b1", // 警告用の色
     },
   },
 });

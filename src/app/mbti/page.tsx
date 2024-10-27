@@ -141,16 +141,33 @@ const NDTPPage = () => {
           </Typography>
           <Stack direction="row" spacing={2} justifyContent="center">
             <Button
-              variant="contained"
-              color="primary"
-              onClick={() => handleAnswer(true)}
+              variant="outlined" // アウトラインスタイルに変更
+              sx={{
+                backgroundColor: "white", // 背景色を白に
+                color: "secondary.main", // 文字色をセカンダリに
+                borderColor: "secondary.main", // 枠の色をセカンダリに
+                "&:hover": {
+                  backgroundColor: "error.main", // ホバー時の背景色を赤に
+                  color: "white", // ホバー時の文字色を白に
+                },
+              }}
+              onClick={() => handleAnswer(true)} // 「はい」ボタン
             >
               はい
             </Button>
+
             <Button
-              variant="contained"
-              color="secondary"
-              onClick={() => handleAnswer(false)}
+              variant="outlined" // アウトラインスタイルに変更
+              sx={{
+                backgroundColor: "white", // 背景色を白に
+                color: "secondary.main", // 文字色をセカンダリに
+                borderColor: "secondary.main", // 枠の色をセカンダリに
+                "&:hover": {
+                  backgroundColor: "error.main", // ホバー時の背景色を赤に
+                  color: "white", // ホバー時の文字色を白に
+                },
+              }}
+              onClick={() => handleAnswer(false)} // 「いいえ」ボタン
             >
               いいえ
             </Button>

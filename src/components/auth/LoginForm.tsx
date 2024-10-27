@@ -27,7 +27,7 @@ function LoginForm({ scene }: LoginFormProps) {
           InputProps={{
             sx: {
               color: "text.primary",
-              backgroundColor: "warning.main",
+              backgroundColor: "white",
               borderRadius: 8,
             },
           }}
@@ -42,7 +42,7 @@ function LoginForm({ scene }: LoginFormProps) {
           InputProps={{
             sx: {
               color: "text.primary",
-              backgroundColor: "warning.main",
+              backgroundColor: "white",
               borderRadius: 8,
             },
           }}
