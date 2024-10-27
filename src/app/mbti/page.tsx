@@ -15,33 +15,39 @@ import { getUuidFromCookie } from "@/actions/users";
 
 const questions = [
   {
-    category: "外向性",
+    category: "イベントスタイル",
     questions: [
-      "あなたは外向的ですか？",
-      "人と話すのが好きですか？",
-      "パーティーに行くのが好きですか？",
+      "外出してイベントの雰囲気を直接感じるのが好きですか？",
+      "人が集まるところに行くと、気分が高まる方ですか？",
+      "自宅よりも、外でのイベントやアクティビティに魅力を感じますか？",
+      "現地でしか味わえない特別な体験に価値を感じますか？",
+      "旅行やお出かけを兼ねたイベントが楽しそうだと思いますか？"
     ],
   },
   {
-    category: "計画性",
+    category: "参加形態",
     questions: [
-      "計画を立てるのが好きですか？",
-      "スケジュールを守るのが得意ですか？",
-      "目標を設定するのが好きですか？",
+      "自分のペースで考えたり、進めたりする方が心地よいですか？",
+      "一人で取り組むと、集中しやすく感じますか？",
+      "他の人に気を使わず、自分のやり方で進める方が楽しいと思いますか？",
+      "チームよりも、一人で自由に進める方がしっくりきますか？",
+      "誰かと意見を合わせたりするより、一人で完結させる方が合っていますか？"
     ],
   },
   {
-    category: "感情性",
+    category: "謎タイプ指向",
     questions: [
-      "感情的な決断をしますか？",
-      "他人の感情に敏感ですか？",
-      "感情を表に出すことが多いですか？",
+      "短時間でできるものを複数こなすと達成感があると感じますか？",
+      "あまり複雑でない、すぐに解決できるものの方が好みですか？",
+      "小さな目標をどんどんクリアしていくのが楽しいと感じますか？",
+      "一度に何か一つのことに長時間取り組むより、テンポよく進めたいですか？",
+      "小さな成功体験を重ねる方が達成感を得やすいと思いますか？"
     ],
   },
 ];
 
 const finalQuestion = {
-  question: "この画像についてどう思いますか？",
+  question: "この謎の答えを下から選んでください。\nいくつ選んでも、選ばなくても構いません。",
   imageUrl: "/path/to/image.jpg", // 画像のパスを指定
   options: ["選択肢1", "選択肢2", "選択肢3", "選択肢4"],
 };
@@ -102,7 +108,7 @@ const NDTPPage = () => {
           body: JSON.stringify({
             id: uuid,
             mbti: newAnswers,
-          }), // 仮のUUIDを使用
+          }),
         }
       );
       if (response.ok) {
@@ -134,7 +140,7 @@ const NDTPPage = () => {
       {currentCategoryIndex < questions.length ? (
         <>
           <Typography variant="h4" gutterBottom>
-            性格診断
+            謎解きMBTI診断
           </Typography>
           <Typography variant="h6" gutterBottom>
             {questions[currentCategoryIndex].questions[currentQuestionIndex]}
