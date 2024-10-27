@@ -61,7 +61,7 @@ const EventSwiperPage = () => {
   return (
     <Box sx={{ textAlign: "center", padding: "20px", position: "relative" }}>
       <Typography variant="h4" gutterBottom>
-        Event Slider
+        あなたにおすすめのイベント
       </Typography>
 
       {/* Swiper */}
