@@ -1,68 +1,16 @@
 export interface User {
-  user_id: string;
-  created_at: Date;
-  name: string;
-  sex: string;
-  age: string;
-  place: string;
-  top_tech: string;
-  top_teches: string[];
-  teches: string[];
-  hobby?: string;
-  occupation?: string;
-  affiliation?: string;
-  qualification: string[];
-  editor?: string;
-  github?: string;
-  twitter?: string;
-  qiita?: string;
-  zenn?: string;
-  atcoder?: string;
-  message?: string;
-  updated_at: Date;
-  portfolio?: string;
-  graduate?: string;
-  desired_occupation?: string;
-  faculty?: string;
-  experience: string[];
-  image_url?: string;
-}
-
-export interface SuggestUsersResponse {
-  samePlaceUsers: User[];
-  sameAgeUsers: User[];
-  sameGraduateYearUsers: User[];
-  sameJobTypeUsers: User[];
-  sameTopTechUsers: User[];
-  sortedUsers: { user: User; score: number }[];
-}
-
-export interface Profile {
-  user_id: string;
-  created_at: Date;
-  name: string;
-  sex: string;
-  age: string;
-  place: string;
-  top_tech: string;
-  top_teches: string[];
-  teches: string[];
-  hobby?: string;
-  occupation?: string;
-  affiliation?: string;
-  qualification: string[];
-  editor?: string;
-  github?: string;
-  twitter?: string;
-  qiita?: string;
-  zenn?: string;
-  atcoder?: string;
-  message?: string;
-  updated_at: Date;
-  portfolio?: string;
-  graduate?: string;
-  desired_occupation?: string;
-  faculty?: string;
-  experience: string[];
-  image_url?: string;
+  id: string; // UUID, string 型
+  name?: string; // ユーザー名, optional
+  sex?: string; // 性別, optional (string 型に変更)
+  events?: any; // ここを any に変更することで柔軟性を持たせることができる
+  age?: string; // 年齢, optional (string 型に変更)
+  place?: string; // 場所, optional
+  mbti?: string; // MBTIタイプ, optional
+  detail?: string; // 詳細, optional
+  date?: string; // 日付, optional
+  url?: string; // URL, optional
+  event_id?: string; // イベントID, optional
+  participants?: string; // 参加者, optional
+  message?: string; // メッセージ, optional
+  email?: string; // メールアドレス, optional
 }

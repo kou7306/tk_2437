@@ -31,7 +31,6 @@ const SignUpPage = () => {
       >
         <Stack spacing={4}>
           <LoginForm scene="sign-up" />
-          <LoginButton provider="github" />
           <LoginButton provider="google" />
         </Stack>
       </Paper>
